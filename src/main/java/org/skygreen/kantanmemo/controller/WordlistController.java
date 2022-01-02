@@ -20,12 +20,6 @@ import java.nio.charset.StandardCharsets;
 @Path("/wordlist")
 public class WordlistController {
     @Inject
-    ProducerTemplate producerTemplate;
-
-    @Inject
-    WordDao wordDao;
-
-    @Inject
     IWordlistService wordlistService;
 
     @POST
@@ -42,7 +36,15 @@ public class WordlistController {
         }
         var body = textBuilder.toString();
         var result = wordlistService.uploadCsv(requestBody.filename, body);
-        return generateResponse(result);
+        return Response.ok(result).build();
+    }
+
+    @GET
+    @Path("/current")
+    @Produces("application/json")
+    public Response current(@CookieParam(value = "user_id") Long userId) {
+        var result = wordlistService.userCurrentWordlist(userId);
+        return Response.ok(result).build();
     }
 
     @POST
@@ -50,21 +52,15 @@ public class WordlistController {
     @Produces("application/json")
     public Response select(@CookieParam(value = "user_id") Long userId, @FormParam(value = "wordlist_id") Long wordlistId) {
         var result = wordlistService.userSelectWordlist(userId, wordlistId);
-        return generateResponse(result);
+        return Response.ok(result).build();
     }
 
     @GET
     @Path("/all")
     @Produces("application/json")
     public Response all() {
-        return generateResponse(wordlistService.getAllWordlists());
-    }
-
-    private Response generateResponse(Object entity) {
-        if (entity == null) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-        return Response.ok(entity).build();
+        var result = wordlistService.getAllWordlists();
+        return Response.ok(result).build();
     }
 
 }

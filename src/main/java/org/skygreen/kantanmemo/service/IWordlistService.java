@@ -1,11 +1,15 @@
 package org.skygreen.kantanmemo.service;
 
-import java.util.Map;
+import org.skygreen.kantanmemo.dto.WordlistDto;
+
+import java.util.List;
 
 public interface IWordlistService {
     Long uploadCsv(String filename, String body);
 
-    Map<String, Long> getAllWordlists();
+    List<WordlistDto> getAllWordlists();
 
-    Long userSelectWordlist(Long userId, Long wordlistId);
+    WordlistDto userSelectWordlist(Long userId, Long wordlistId);
+
+    WordlistDto userCurrentWordlist(Long userId);
 }
