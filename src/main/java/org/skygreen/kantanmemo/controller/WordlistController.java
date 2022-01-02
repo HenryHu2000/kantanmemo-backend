@@ -1,9 +1,9 @@
 package org.skygreen.kantanmemo.controller;
 
-import org.apache.camel.ProducerTemplate;
+import org.jboss.resteasy.annotations.Form;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-import org.skygreen.kantanmemo.dao.WordDao;
-import org.skygreen.kantanmemo.dto.MultipartBody;
+import org.skygreen.kantanmemo.data.FileUploadForm;
+import org.skygreen.kantanmemo.data.WordlistSelectForm;
 import org.skygreen.kantanmemo.service.IWordlistService;
 
 import javax.inject.Inject;
@@ -26,16 +26,16 @@ public class WordlistController {
     @Path("/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces("application/json")
-    public Response upload(@MultipartForm MultipartBody requestBody) throws IOException {
+    public Response upload(@MultipartForm FileUploadForm form) throws IOException {
         StringBuilder textBuilder = new StringBuilder();
-        try (Reader reader = new BufferedReader(new InputStreamReader(requestBody.file, Charset.forName(StandardCharsets.UTF_8.name())))) {
+        try (Reader reader = new BufferedReader(new InputStreamReader(form.file, Charset.forName(StandardCharsets.UTF_8.name())))) {
             int c;
             while ((c = reader.read()) != -1) {
                 textBuilder.append((char) c);
             }
         }
         var body = textBuilder.toString();
-        var result = wordlistService.uploadCsv(requestBody.filename, body);
+        var result = wordlistService.uploadCsv(form.filename, body);
         return Response.ok(result).build();
     }
 
@@ -50,7 +50,13 @@ public class WordlistController {
     @POST
     @Path("/select")
     @Produces("application/json")
-    public Response select(@CookieParam(value = "user_id") Long userId, @FormParam(value = "wordlist_id") Long wordlistId) {
+    public Response select(@CookieParam(value = "user_id") Long userId, @MultipartForm WordlistSelectForm form) {
+        var wordlistId = 0L;
+        try {
+            wordlistId = Long.parseLong(form.wordlistId);
+        } catch (NumberFormatException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
         var result = wordlistService.userSelectWordlist(userId, wordlistId);
         return Response.ok(result).build();
     }

@@ -73,10 +73,17 @@ public class WordlistService implements IWordlistService {
 
     @Override
     public WordlistDto userCurrentWordlist(Long userId) {
+        if (userId == null) {
+            throw new ForbiddenException();
+        }
         var personOpt = personDao.findById(userId);
         if (personOpt.isPresent()) {
             var person = personOpt.get();
-            return WordlistDto.wordlistToDto(person.getCurrentWordlist());
+            var result = WordlistDto.wordlistToDto(person.getCurrentWordlist());
+            if (result == null) {
+                return new WordlistDto(-1L, "");
+            }
+            return result;
         } else {
             throw new ForbiddenException();
         }
