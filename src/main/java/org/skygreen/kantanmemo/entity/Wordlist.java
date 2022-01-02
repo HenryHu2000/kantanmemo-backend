@@ -10,7 +10,7 @@ public class Wordlist {
     @GeneratedValue
     private Long id;
     private String name;
-    @OneToMany
+    @ManyToMany
     private List<Word> words;
 
     public Long getId() {
