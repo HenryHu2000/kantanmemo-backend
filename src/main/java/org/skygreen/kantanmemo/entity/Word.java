@@ -3,6 +3,8 @@ package org.skygreen.kantanmemo.entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Table;
+
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 
@@ -25,18 +27,19 @@ import org.apache.camel.dataformat.bindy.annotation.DataField;
  * }
  */
 @Entity
+@Table(name = "word")
 @CsvRecord(separator = ",", skipFirstLine = true)
 public class Word {
-    private Long id;
-    @DataField(pos=1)
-    private String name;
-    @DataField(pos=2)
-    private String pronunciation;
-    @DataField(pos=3)
-    private String meaning;
-
     @Id
     @GeneratedValue
+    private Long id;
+    @DataField(pos = 1)
+    private String name;
+    @DataField(pos = 2)
+    private String hint;
+    @DataField(pos = 3)
+    private String definition;
+
     public Long getId() {
         return id;
     }
@@ -53,20 +56,20 @@ public class Word {
         this.name = name;
     }
 
-    public String getPronunciation() {
-        return pronunciation;
+    public String getHint() {
+        return hint;
     }
 
-    public void setPronunciation(String pronunciation) {
-        this.pronunciation = pronunciation;
+    public void setHint(String hint) {
+        this.hint = hint;
     }
 
-    public String getMeaning() {
-        return meaning;
+    public String getDefinition() {
+        return definition;
     }
 
-    public void setMeaning(String meaning) {
-        this.meaning = meaning;
+    public void setDefinition(String definition) {
+        this.definition = definition;
     }
 
 }

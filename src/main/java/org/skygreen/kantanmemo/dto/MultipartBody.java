@@ -11,7 +11,7 @@ public class MultipartBody {
     @PartType(MediaType.APPLICATION_OCTET_STREAM)
     public InputStream file;
 
-    @FormParam("fileName")
+    @FormParam("filename")
     @PartType(MediaType.TEXT_PLAIN)
-    public String fileName;
+    public String filename;
 }
