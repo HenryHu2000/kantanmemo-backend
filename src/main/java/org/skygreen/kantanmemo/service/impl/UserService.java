@@ -4,6 +4,8 @@ import org.skygreen.kantanmemo.dao.PersonDao;
 import org.skygreen.kantanmemo.dto.PersonDto;
 import org.skygreen.kantanmemo.entity.Person;
 import org.skygreen.kantanmemo.service.IUserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
@@ -11,6 +13,8 @@ import javax.ws.rs.ForbiddenException;
 
 @ApplicationScoped
 public class UserService implements IUserService {
+    public static final Logger LOG = LoggerFactory.getLogger(UserService.class);
+
     @Inject
     PersonDao personDao;
 
