@@ -1,9 +1,7 @@
 package org.skygreen.kantanmemo.controller;
 
-import org.jboss.resteasy.annotations.Form;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import org.skygreen.kantanmemo.data.FileUploadForm;
-import org.skygreen.kantanmemo.data.WordlistSelectForm;
 import org.skygreen.kantanmemo.service.IWordlistService;
 
 import javax.inject.Inject;
@@ -43,21 +41,21 @@ public class WordlistController {
     @Path("/current")
     @Produces("application/json")
     public Response current(@CookieParam(value = "user_id") Long userId) {
-        var result = wordlistService.userCurrentWordlist(userId);
+        if (userId == null) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        var result = wordlistService.currentUserWordlist(userId);
         return Response.ok(result).build();
     }
 
     @POST
     @Path("/select")
     @Produces("application/json")
-    public Response select(@CookieParam(value = "user_id") Long userId, @MultipartForm WordlistSelectForm form) {
-        var wordlistId = 0L;
-        try {
-            wordlistId = Long.parseLong(form.wordlistId);
-        } catch (NumberFormatException e) {
+    public Response select(@CookieParam(value = "user_id") Long userId, @FormParam("wordlist_id") Long wordlistId) {
+        if (userId == null) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        var result = wordlistService.userSelectWordlist(userId, wordlistId);
+        var result = wordlistService.selectUserWordlist(userId, wordlistId);
         return Response.ok(result).build();
     }
 

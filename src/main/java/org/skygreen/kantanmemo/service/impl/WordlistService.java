@@ -33,6 +33,9 @@ public class WordlistService implements IWordlistService {
 
     @Override
     public Long uploadCsv(String filename, String body) {
+        if (filename == null || body == null) {
+            throw new ForbiddenException();
+        }
         List<Word> words;
         try {
             words = producerTemplate.requestBody("direct:csv-to-json", body, List.class);
@@ -54,7 +57,10 @@ public class WordlistService implements IWordlistService {
     }
 
     @Override
-    public WordlistDto userSelectWordlist(Long userId, Long wordlistId) {
+    public WordlistDto selectUserWordlist(Long userId, Long wordlistId) {
+        if (userId == null || wordlistId == null) {
+            throw new ForbiddenException();
+        }
         var personOpt = personDao.findById(userId);
         var wordlistOpt = wordlistDao.findById(wordlistId);
         if (personOpt.isPresent() && wordlistOpt.isPresent()) {
@@ -72,7 +78,7 @@ public class WordlistService implements IWordlistService {
     }
 
     @Override
-    public WordlistDto userCurrentWordlist(Long userId) {
+    public WordlistDto currentUserWordlist(Long userId) {
         if (userId == null) {
             throw new ForbiddenException();
         }

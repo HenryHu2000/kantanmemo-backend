@@ -11,9 +11,9 @@ public class PersonDto implements Serializable {
     private final Long id;
     private final String name;
     private final WordlistDto currentWordlist;
-    private final Map<WordlistDto, Integer> progress;
+    private final Map<Long, Integer> progress;
 
-    public PersonDto(Long id, String name, WordlistDto currentWordlist, Map<WordlistDto, Integer> progress) {
+    public PersonDto(Long id, String name, WordlistDto currentWordlist, Map<Long, Integer> progress) {
         this.id = id;
         this.name = name;
         this.currentWordlist = currentWordlist;
@@ -24,9 +24,9 @@ public class PersonDto implements Serializable {
         if (person == null) {
             return null;
         }
-        var progress = new HashMap<WordlistDto, Integer>();
+        var progress = new HashMap<Long, Integer>();
         for (var key : person.getProgress().keySet()) {
-            progress.put(WordlistDto.wordlistToDto(key), person.getProgress().get(key));
+            progress.put(key.getId(), person.getProgress().get(key));
         }
         return new PersonDto(person.getId(), person.getName(), WordlistDto.wordlistToDto(person.getCurrentWordlist()), progress);
     }
@@ -43,7 +43,7 @@ public class PersonDto implements Serializable {
         return currentWordlist;
     }
 
-    public Map<WordlistDto, Integer> getProgress() {
+    public Map<Long, Integer> getProgress() {
         return progress;
     }
 
@@ -52,10 +52,7 @@ public class PersonDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonDto entity = (PersonDto) o;
-        return Objects.equals(this.id, entity.id) &&
-                Objects.equals(this.name, entity.name) &&
-                Objects.equals(this.currentWordlist, entity.currentWordlist) &&
-                Objects.equals(this.progress, entity.progress);
+        return Objects.equals(this.id, entity.id) && Objects.equals(this.name, entity.name) && Objects.equals(this.currentWordlist, entity.currentWordlist) && Objects.equals(this.progress, entity.progress);
     }
 
     @Override
@@ -65,10 +62,6 @@ public class PersonDto implements Serializable {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" +
-                "id = " + id + ", " +
-                "name = " + name + ", " +
-                "currentWordlist = " + currentWordlist + ", " +
-                "progress = " + progress + ")";
+        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "currentWordlist = " + currentWordlist + ", " + "progress = " + progress + ")";
     }
 }

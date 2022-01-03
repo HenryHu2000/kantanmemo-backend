@@ -15,7 +15,10 @@ public class UserService implements IUserService {
     PersonDao personDao;
 
     @Override
-    public PersonDto login(Long userId) {
+    public PersonDto getUserInfo(Long userId) {
+        if (userId == null) {
+            throw new ForbiddenException();
+        }
         var personOpt = personDao.findById(userId);
         if (personOpt.isPresent()) {
             var person = personOpt.get();
@@ -26,12 +29,14 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public PersonDto register(String name) {
+    public Long register(String name) {
+        if (name == null) {
+            throw new ForbiddenException();
+        }
         var person = new Person();
         person.setName(name);
         personDao.save(person);
-        return PersonDto.personToDto(person);
+        return person.getId();
     }
-
 
 }
