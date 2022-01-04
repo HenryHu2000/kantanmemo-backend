@@ -7,14 +7,14 @@ import java.util.Objects;
 public class PersonDto implements Serializable {
     private final Long id;
     private final String name;
-    private final WordlistDto currentWordlist;
     private final Map<Long, Integer> progress;
+    private final UserSettingsDto userSettings;
 
-    public PersonDto(Long id, String name, WordlistDto currentWordlist, Map<Long, Integer> progress) {
+    public PersonDto(Long id, String name, Map<Long, Integer> progress, UserSettingsDto userSettings) {
         this.id = id;
         this.name = name;
-        this.currentWordlist = currentWordlist;
         this.progress = progress;
+        this.userSettings = userSettings;
     }
 
     public Long getId() {
@@ -25,12 +25,12 @@ public class PersonDto implements Serializable {
         return name;
     }
 
-    public WordlistDto getCurrentWordlist() {
-        return currentWordlist;
-    }
-
     public Map<Long, Integer> getProgress() {
         return progress;
+    }
+
+    public UserSettingsDto getUserSettings() {
+        return userSettings;
     }
 
     @Override
@@ -38,16 +38,23 @@ public class PersonDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PersonDto entity = (PersonDto) o;
-        return Objects.equals(this.id, entity.id) && Objects.equals(this.name, entity.name) && Objects.equals(this.currentWordlist, entity.currentWordlist) && Objects.equals(this.progress, entity.progress);
+        return Objects.equals(this.id, entity.id) &&
+                Objects.equals(this.name, entity.name) &&
+                Objects.equals(this.progress, entity.progress) &&
+                Objects.equals(this.userSettings, entity.userSettings);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, currentWordlist, progress);
+        return Objects.hash(id, name, progress, userSettings);
     }
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + "(" + "id = " + id + ", " + "name = " + name + ", " + "currentWordlist = " + currentWordlist + ", " + "progress = " + progress + ")";
+        return getClass().getSimpleName() + "(" +
+                "id = " + id + ", " +
+                "name = " + name + ", " +
+                "progress = " + progress + ", " +
+                "userSettings = " + userSettings + ")";
     }
 }

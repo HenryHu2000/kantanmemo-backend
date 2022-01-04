@@ -60,43 +60,6 @@ public class WordlistService implements IWordlistService {
         return wordlistDao.findAll().stream().map(wordlistMapper::wordlistToWordlistDto).collect(Collectors.toList());
     }
 
-    @Override
-    public WordlistDto selectUserWordlist(Long userId, Long wordlistId) {
-        if (userId == null || wordlistId == null) {
-            throw new ForbiddenException();
-        }
-        var personOpt = personDao.findById(userId);
-        var wordlistOpt = wordlistDao.findById(wordlistId);
-        if (personOpt.isPresent() && wordlistOpt.isPresent()) {
-            var person = personOpt.get();
-            var wordlist = wordlistOpt.get();
-            person.setCurrentWordlist(wordlist);
-            if (!person.getProgress().containsKey(wordlist)) {
-                person.getProgress().put(wordlist, 0);
-            }
-            personDao.save(person);
-            return wordlistMapper.wordlistToWordlistDto(wordlist);
-        } else {
-            throw new ForbiddenException();
-        }
-    }
 
-    @Override
-    public WordlistDto currentUserWordlist(Long userId) {
-        if (userId == null) {
-            throw new ForbiddenException();
-        }
-        var personOpt = personDao.findById(userId);
-        if (personOpt.isPresent()) {
-            var person = personOpt.get();
-            var result = wordlistMapper.wordlistToWordlistDto(person.getCurrentWordlist());
-            if (result == null) {
-                return new WordlistDto(-1L, "");
-            }
-            return result;
-        } else {
-            throw new ForbiddenException();
-        }
-    }
 
 }

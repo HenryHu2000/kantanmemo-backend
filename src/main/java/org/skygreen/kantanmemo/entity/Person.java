@@ -13,10 +13,10 @@ public class Person {
     private String name;
     @OneToMany
     private List<WordLearningData> wordLearningDataList;
-    @ManyToOne
-    private Wordlist currentWordlist;
     @ElementCollection
     private Map<Wordlist, Integer> progress;
+    @Embedded
+    private UserSettings userSettings;
 
     public Long getId() {
         return id;
@@ -42,14 +42,6 @@ public class Person {
         this.wordLearningDataList = wordLearningDataList;
     }
 
-    public Wordlist getCurrentWordlist() {
-        return currentWordlist;
-    }
-
-    public void setCurrentWordlist(Wordlist currentWordlist) {
-        this.currentWordlist = currentWordlist;
-    }
-
     public Map<Wordlist, Integer> getProgress() {
         return progress;
     }
@@ -57,4 +49,13 @@ public class Person {
     public void setProgress(Map<Wordlist, Integer> progress) {
         this.progress = progress;
     }
+
+    public UserSettings getUserSettings() {
+        return userSettings;
+    }
+
+    public void setUserSettings(UserSettings userSettings) {
+        this.userSettings = userSettings;
+    }
+
 }

@@ -38,28 +38,6 @@ public class WordlistController {
     }
 
     @GET
-    @Path("/current")
-    @Produces("application/json")
-    public Response current(@CookieParam(value = "user_id") Long userId) {
-        if (userId == null) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-        var result = wordlistService.currentUserWordlist(userId);
-        return Response.ok(result).build();
-    }
-
-    @POST
-    @Path("/select")
-    @Produces("application/json")
-    public Response select(@CookieParam(value = "user_id") Long userId, @FormParam("wordlist_id") Long wordlistId) {
-        if (userId == null) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-        var result = wordlistService.selectUserWordlist(userId, wordlistId);
-        return Response.ok(result).build();
-    }
-
-    @GET
     @Path("/all")
     @Produces("application/json")
     public Response all() {

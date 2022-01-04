@@ -9,7 +9,4 @@ public interface IWordlistService {
 
     List<WordlistDto> getAllWordlists();
 
-    WordlistDto selectUserWordlist(Long userId, Long wordlistId);
-
-    WordlistDto currentUserWordlist(Long userId);
 }

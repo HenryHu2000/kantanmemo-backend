@@ -1,8 +1,10 @@
 package org.skygreen.kantanmemo.service.mapper;
 
-import org.mapstruct.Mapper;
+import org.mapstruct.*;
 import org.skygreen.kantanmemo.dto.PersonDto;
+import org.skygreen.kantanmemo.dto.UserSettingsDto;
 import org.skygreen.kantanmemo.entity.Person;
+import org.skygreen.kantanmemo.entity.UserSettings;
 import org.skygreen.kantanmemo.entity.Wordlist;
 
 import java.util.HashMap;
@@ -19,4 +21,10 @@ public abstract class PersonMapper {
         }
         return output;
     }
+
+    @Mapping(source = "currentWordlistId", target = "currentWordlist.id")
+    public abstract UserSettings settingsDtoToSettings(UserSettingsDto userSettingsDto);
+
+    @Mapping(source = "currentWordlist.id", target = "currentWordlistId")
+    public abstract UserSettingsDto settingsToSettingsDto(UserSettings userSettings);
 }
