@@ -1,7 +1,5 @@
 package org.skygreen.kantanmemo.dto;
 
-import org.skygreen.kantanmemo.entity.Wordlist;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -12,13 +10,6 @@ public class WordlistDto implements Serializable {
     public WordlistDto(Long id, String name) {
         this.id = id;
         this.name = name;
-    }
-
-    public static WordlistDto wordlistToDto(Wordlist wordlist) {
-        if (wordlist == null) {
-            return null;
-        }
-        return new WordlistDto(wordlist.getId(), wordlist.getName());
     }
 
     public Long getId() {

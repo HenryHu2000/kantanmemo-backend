@@ -1,9 +1,6 @@
 package org.skygreen.kantanmemo.dto;
 
-import org.skygreen.kantanmemo.entity.Person;
-
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
@@ -18,17 +15,6 @@ public class PersonDto implements Serializable {
         this.name = name;
         this.currentWordlist = currentWordlist;
         this.progress = progress;
-    }
-
-    public static PersonDto personToDto(Person person) {
-        if (person == null) {
-            return null;
-        }
-        var progress = new HashMap<Long, Integer>();
-        for (var key : person.getProgress().keySet()) {
-            progress.put(key.getId(), person.getProgress().get(key));
-        }
-        return new PersonDto(person.getId(), person.getName(), WordlistDto.wordlistToDto(person.getCurrentWordlist()), progress);
     }
 
     public Long getId() {

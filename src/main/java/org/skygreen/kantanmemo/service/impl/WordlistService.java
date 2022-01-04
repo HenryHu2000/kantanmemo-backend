@@ -9,6 +9,7 @@ import org.skygreen.kantanmemo.dto.WordlistDto;
 import org.skygreen.kantanmemo.entity.Word;
 import org.skygreen.kantanmemo.entity.Wordlist;
 import org.skygreen.kantanmemo.service.IWordlistService;
+import org.skygreen.kantanmemo.service.mapper.WordlistMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,6 +31,9 @@ public class WordlistService implements IWordlistService {
     WordlistDao wordlistDao;
     @Inject
     PersonDao personDao;
+
+    @Inject
+    WordlistMapper wordlistMapper;
 
     @Override
     public Long uploadCsv(String filename, String body) {
@@ -53,7 +57,7 @@ public class WordlistService implements IWordlistService {
 
     @Override
     public List<WordlistDto> getAllWordlists() {
-        return wordlistDao.findAll().stream().map(WordlistDto::wordlistToDto).collect(Collectors.toList());
+        return wordlistDao.findAll().stream().map(wordlistMapper::wordlistToWordlistDto).collect(Collectors.toList());
     }
 
     @Override
@@ -71,7 +75,7 @@ public class WordlistService implements IWordlistService {
                 person.getProgress().put(wordlist, 0);
             }
             personDao.save(person);
-            return WordlistDto.wordlistToDto(wordlist);
+            return wordlistMapper.wordlistToWordlistDto(wordlist);
         } else {
             throw new ForbiddenException();
         }
@@ -85,7 +89,7 @@ public class WordlistService implements IWordlistService {
         var personOpt = personDao.findById(userId);
         if (personOpt.isPresent()) {
             var person = personOpt.get();
-            var result = WordlistDto.wordlistToDto(person.getCurrentWordlist());
+            var result = wordlistMapper.wordlistToWordlistDto(person.getCurrentWordlist());
             if (result == null) {
                 return new WordlistDto(-1L, "");
             }

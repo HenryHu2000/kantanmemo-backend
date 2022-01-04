@@ -4,6 +4,7 @@ import org.skygreen.kantanmemo.dao.PersonDao;
 import org.skygreen.kantanmemo.dto.PersonDto;
 import org.skygreen.kantanmemo.entity.Person;
 import org.skygreen.kantanmemo.service.IUserService;
+import org.skygreen.kantanmemo.service.mapper.PersonMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,9 @@ public class UserService implements IUserService {
     @Inject
     PersonDao personDao;
 
+    @Inject
+    PersonMapper personMapper;
+
     @Override
     public PersonDto getUserInfo(Long userId) {
         if (userId == null) {
@@ -26,7 +30,7 @@ public class UserService implements IUserService {
         var personOpt = personDao.findById(userId);
         if (personOpt.isPresent()) {
             var person = personOpt.get();
-            return PersonDto.personToDto(person);
+            return personMapper.personToPersonDto(person);
         } else {
             throw new ForbiddenException();
         }
