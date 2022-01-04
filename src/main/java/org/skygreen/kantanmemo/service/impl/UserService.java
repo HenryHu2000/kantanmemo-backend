@@ -69,7 +69,10 @@ public class UserService implements IUserService {
         if (userId == null || newUserSettings == null) {
             throw new ForbiddenException();
         }
-        if (newUserSettings.getCurrentWordlistId() == null || !wordlistDao.existsById(newUserSettings.getCurrentWordlistId())) {
+        if (newUserSettings.getCurrentWordlistId() != null && !wordlistDao.existsById(newUserSettings.getCurrentWordlistId())) {
+            throw new ForbiddenException();
+        }
+        if (newUserSettings.getDailyNewWordNum() < 0 || newUserSettings.getDailyRevisingWordNum() < 0) {
             throw new ForbiddenException();
         }
         var personOpt = personDao.findById(userId);
