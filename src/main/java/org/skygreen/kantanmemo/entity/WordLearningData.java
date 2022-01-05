@@ -14,6 +14,8 @@ public class WordLearningData {
     private Word word;
     private int familiarity;
     private Calendar lastSeen;
+    @Transient
+    private WordKnownType wordKnownType;
 
     public Long getId() {
         return id;
@@ -45,5 +47,13 @@ public class WordLearningData {
 
     public void setLastSeen(Calendar lastSeen) {
         this.lastSeen = lastSeen;
+    }
+
+    public WordKnownType getWordKnownType() {
+        return wordKnownType;
+    }
+
+    public void setWordKnownType(WordKnownType wordKnownType) {
+        this.wordKnownType = wordKnownType;
     }
 }
