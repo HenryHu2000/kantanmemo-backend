@@ -41,8 +41,9 @@ public class LearningService implements ILearningService {
         if (learningProcess.isTerminated()) {
             return null;
         }
-        wordLearningDataDao.save(learningProcess.getCurrentWord());
+        var currentWord = learningProcess.getCurrentWord();
         learningProcess.proceed(isKnown);
+        wordLearningDataDao.save(currentWord);
         return learningProcess.getCurrentWord();
     }
 
