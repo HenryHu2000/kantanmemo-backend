@@ -33,16 +33,24 @@ public class WordlistController {
             }
         }
         var body = textBuilder.toString();
-        var result = wordlistService.uploadCsv(form.filename, body);
-        return Response.ok(result).build();
+        try {
+            var result = wordlistService.uploadCsv(form.filename, body);
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @GET
     @Path("/all")
     @Produces("application/json")
     public Response all() {
-        var result = wordlistService.getAllWordlists();
-        return Response.ok(result).build();
+        try {
+            var result = wordlistService.getAllWordlists();
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
 }

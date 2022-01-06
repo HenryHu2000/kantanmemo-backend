@@ -1,6 +1,6 @@
 package org.skygreen.kantanmemo.controller;
 
-import org.skygreen.kantanmemo.service.impl.LearningService;
+import org.skygreen.kantanmemo.service.ILearningService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -9,7 +9,7 @@ import javax.ws.rs.core.Response;
 @Path("/learning")
 public class LearningController {
     @Inject
-    LearningService learningService;
+    ILearningService learningService;
 
     @GET
     @Path("/current")
@@ -18,8 +18,12 @@ public class LearningController {
         if (userId == null) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        var word = learningService.getCurrentWord(userId);
-        return Response.ok(word).build();
+        try {
+            var word = learningService.getCurrentWord(userId);
+            return Response.ok(word).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @POST
@@ -29,7 +33,11 @@ public class LearningController {
         if (userId == null) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        var word = learningService.proceedToNextWord(userId, isKnown);
-        return Response.ok(word).build();
+        try {
+            var word = learningService.proceedToNextWord(userId, isKnown);
+            return Response.ok(word).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 }

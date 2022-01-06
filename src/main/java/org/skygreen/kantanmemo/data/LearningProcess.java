@@ -1,11 +1,12 @@
 package org.skygreen.kantanmemo.data;
 
-import org.skygreen.kantanmemo.dto.WordLearningDataDao;
 import org.skygreen.kantanmemo.entity.WordKnownType;
 import org.skygreen.kantanmemo.entity.WordLearningData;
 
-import javax.inject.Inject;
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Calendar;
+import java.util.Deque;
+import java.util.List;
 
 public class LearningProcess {
     private static final int MAX_WORD_QUEUE_LENGTH = 20;
@@ -125,58 +126,6 @@ public class LearningProcess {
         } else {
             return false;
         }
-    }
-
-    /**
-     * Add a word to the front of the queue.
-     */
-    private boolean addNewWordToQueue(WordLearningData wordData) {
-        learningQueue.addFirst(wordData);
-        return true;
-    }
-
-    public EnumMap<WordKnownType, Integer> getWordNumbersForEachType() {
-        Map<WordKnownType, Integer> numOfTypesMap = new HashMap<>();
-        numOfTypesMap.put(WordKnownType.UNKNOWN, 0);
-        numOfTypesMap.put(WordKnownType.HALF_KNOWN, 0);
-        numOfTypesMap.put(WordKnownType.KNOWN, 0);
-
-        for (var wordData : learningQueue) {
-            switch (wordData.getWordKnownType()) {
-                case KNOWN:
-                    numOfTypesMap.put(WordKnownType.KNOWN, numOfTypesMap.get(WordKnownType.KNOWN) + 1);
-                    break;
-                case HALF_KNOWN:
-                    numOfTypesMap.put(WordKnownType.HALF_KNOWN, numOfTypesMap.get(WordKnownType.HALF_KNOWN) + 1);
-                    break;
-                case UNKNOWN:
-                    numOfTypesMap.put(WordKnownType.UNKNOWN, numOfTypesMap.get(WordKnownType.UNKNOWN) + 1);
-                    break;
-                default:
-                    break;
-            }
-        }
-        return new EnumMap<>(numOfTypesMap);
-    }
-
-    public Deque<WordLearningData> getRemainingWords() {
-        return remainingWords;
-    }
-
-    public Deque<WordLearningData> getLearningQueue() {
-        return learningQueue;
-    }
-
-    public Deque<WordLearningData> getFinishedWords() {
-        return finishedWords;
-    }
-
-    public List<WordLearningData> getAllWords() {
-        List<WordLearningData> list = new ArrayList<>();
-        list.addAll(remainingWords);
-        list.addAll(learningQueue);
-        list.addAll(finishedWords);
-        return list;
     }
 
     public WordLearningData getCurrentWord() {

@@ -16,19 +16,15 @@ public class UserController {
     @Path("/register")
     @Produces("application/json")
     public Response register(@FormParam(value = "user_name") String name) {
-        var result = userService.register(name);
-        return Response.ok(result).build();
-    }
-
-    @GET
-    @Path("/info")
-    @Produces("application/json")
-    public Response info(@QueryParam(value = "user_id") Long userId) {
-        if (userId == null) {
+        if (name == null) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        var result = userService.getUserInfo(userId);
-        return Response.ok(result).build();
+        try {
+            var result = userService.register(name);
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @GET
@@ -38,8 +34,12 @@ public class UserController {
         if (userId == null) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        var result = userService.getUserInfo(userId);
-        return Response.ok(result).build();
+        try {
+            var result = userService.getUserInfo(userId);
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @GET
@@ -49,8 +49,12 @@ public class UserController {
         if (userId == null) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        var result = userService.getUserSettings(userId);
-        return Response.ok(result).build();
+        try {
+            var result = userService.getUserSettings(userId);
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 
     @POST
@@ -60,7 +64,11 @@ public class UserController {
         if (userId == null || userSettings == null) {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
-        var result = userService.setUserSettings(userId, userSettings);
-        return Response.ok(result).build();
+        try {
+            var result = userService.setUserSettings(userId, userSettings);
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
     }
 }

@@ -41,7 +41,7 @@ public class UserService implements IUserService {
 
     @Override
     public Long register(String name) {
-        if (name == null) {
+        if (name == null || name.isBlank()) {
             throw new ForbiddenException();
         }
         var person = new Person();
