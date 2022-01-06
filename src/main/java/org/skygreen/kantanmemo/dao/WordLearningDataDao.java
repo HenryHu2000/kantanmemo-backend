@@ -1,4 +1,4 @@
-package org.skygreen.kantanmemo.dto;
+package org.skygreen.kantanmemo.dao;
 
 import org.skygreen.kantanmemo.entity.WordLearningData;
 import org.springframework.data.jpa.repository.JpaRepository;

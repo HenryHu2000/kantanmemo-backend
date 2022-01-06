@@ -2,7 +2,7 @@ package org.skygreen.kantanmemo.service.impl;
 
 import org.skygreen.kantanmemo.dao.PersonDao;
 import org.skygreen.kantanmemo.data.LearningProcess;
-import org.skygreen.kantanmemo.dto.WordLearningDataDao;
+import org.skygreen.kantanmemo.dao.WordLearningDataDao;
 import org.skygreen.kantanmemo.entity.Person;
 import org.skygreen.kantanmemo.entity.WordLearningData;
 import org.skygreen.kantanmemo.service.ILearningService;
