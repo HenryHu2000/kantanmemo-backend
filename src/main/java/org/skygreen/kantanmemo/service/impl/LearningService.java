@@ -26,7 +26,7 @@ public class LearningService implements ILearningService {
     Map<Long, LearningProcess> learningProcessMap;
 
 
-    public WordLearningData getCurrentWord(Long userId) {
+    public synchronized WordLearningData getCurrentWord(Long userId) {
         var person = verifyAndGetPerson(userId);
         var learningProcess = getLearningProcess(person);
         if (learningProcess.isTerminated()) {
@@ -35,7 +35,7 @@ public class LearningService implements ILearningService {
         return learningProcess.getCurrentWord();
     }
 
-    public WordLearningData proceedToNextWord(Long userId, boolean isKnown) {
+    public synchronized WordLearningData proceedToNextWord(Long userId, boolean isKnown) {
         var person = verifyAndGetPerson(userId);
         var learningProcess = getLearningProcess(person);
         if (learningProcess.isTerminated()) {
