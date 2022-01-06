@@ -40,4 +40,19 @@ public class LearningController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
+
+    @GET
+    @Path("/progress")
+    @Produces("application/json")
+    public Response progress(@CookieParam(value = "user_id") Long userId) {
+        if (userId == null) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        try {
+            var dailyProgress = learningService.getDailyProgress(userId);
+            return Response.ok(dailyProgress).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
 }

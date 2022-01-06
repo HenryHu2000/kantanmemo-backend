@@ -3,6 +3,7 @@ package org.skygreen.kantanmemo.service.impl;
 import org.skygreen.kantanmemo.dao.PersonDao;
 import org.skygreen.kantanmemo.data.LearningProcess;
 import org.skygreen.kantanmemo.dao.WordLearningDataDao;
+import org.skygreen.kantanmemo.dto.DailyProgressDTO;
 import org.skygreen.kantanmemo.entity.Person;
 import org.skygreen.kantanmemo.entity.WordLearningData;
 import org.skygreen.kantanmemo.service.ILearningService;
@@ -45,6 +46,12 @@ public class LearningService implements ILearningService {
         learningProcess.proceed(isKnown);
         wordLearningDataDao.save(currentWord);
         return learningProcess.getCurrentWord();
+    }
+
+    public synchronized DailyProgressDTO getDailyProgress(Long userId) {
+        var person = verifyAndGetPerson(userId);
+        var learningProcess = getLearningProcess(person);
+        return learningProcess.getDailyProgress();
     }
 
     private Person verifyAndGetPerson(Long userId) {
