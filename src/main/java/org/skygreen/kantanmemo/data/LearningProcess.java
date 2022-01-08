@@ -1,6 +1,6 @@
 package org.skygreen.kantanmemo.data;
 
-import org.skygreen.kantanmemo.dto.DailyProgressDTO;
+import org.skygreen.kantanmemo.dto.DailyProgressDto;
 import org.skygreen.kantanmemo.entity.WordKnownType;
 import org.skygreen.kantanmemo.entity.WordLearningData;
 
@@ -137,7 +137,7 @@ public class LearningProcess {
         return isTerminated;
     }
 
-    public DailyProgressDTO getDailyProgress() {
-        return new DailyProgressDTO(remainingWords.size(), learningQueue.size(), finishedWords.size());
+    public DailyProgressDto getDailyProgress() {
+        return new DailyProgressDto(remainingWords.size(), learningQueue.size(), finishedWords.size());
     }
 }

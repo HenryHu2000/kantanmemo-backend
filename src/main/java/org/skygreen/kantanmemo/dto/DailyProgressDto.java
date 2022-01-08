@@ -2,12 +2,12 @@ package org.skygreen.kantanmemo.dto;
 
 import java.util.Objects;
 
-public class DailyProgressDTO {
+public class DailyProgressDto {
     private final int remainingNum;
     private final int learningNum;
     private final int finishedNum;
 
-    public DailyProgressDTO(int remainingNum, int learningNum, int finishedNum) {
+    public DailyProgressDto(int remainingNum, int learningNum, int finishedNum) {
         this.remainingNum = remainingNum;
         this.learningNum = learningNum;
         this.finishedNum = finishedNum;
@@ -29,7 +29,7 @@ public class DailyProgressDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        DailyProgressDTO that = (DailyProgressDTO) o;
+        DailyProgressDto that = (DailyProgressDto) o;
         return remainingNum == that.remainingNum && learningNum == that.learningNum && finishedNum == that.finishedNum;
     }
 

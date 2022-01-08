@@ -1,6 +1,6 @@
 package org.skygreen.kantanmemo.service;
 
-import org.skygreen.kantanmemo.dto.DailyProgressDTO;
+import org.skygreen.kantanmemo.dto.DailyProgressDto;
 import org.skygreen.kantanmemo.entity.WordLearningData;
 
 public interface ILearningService {
@@ -8,7 +8,7 @@ public interface ILearningService {
 
     WordLearningData proceedToNextWord(Long userId, boolean isKnown);
 
-    DailyProgressDTO getDailyProgress(Long userId);
+    DailyProgressDto getDailyProgress(Long userId);
 
     boolean resetLearningProcess(Long userId);
 }

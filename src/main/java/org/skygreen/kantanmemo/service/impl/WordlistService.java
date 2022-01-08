@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.ForbiddenException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,9 +58,9 @@ public class WordlistService implements IWordlistService {
 
     @Override
     public List<WordlistDto> getAllWordlists() {
-        return wordlistDao.findAll().stream().map(wordlistMapper::wordlistToWordlistDto).collect(Collectors.toList());
+        return wordlistDao.findAll().stream()
+                .map(wordlistMapper::wordlistToWordlistDto)
+                .sorted(Comparator.comparing(WordlistDto::getName))
+                .collect(Collectors.toList());
     }
-
-
-
 }
