@@ -9,4 +9,6 @@ public interface ILearningService {
     WordLearningData proceedToNextWord(Long userId, boolean isKnown);
 
     DailyProgressDTO getDailyProgress(Long userId);
+
+    boolean resetLearningProcess(Long userId);
 }

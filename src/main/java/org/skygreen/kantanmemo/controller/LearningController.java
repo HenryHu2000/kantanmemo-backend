@@ -55,4 +55,19 @@ public class LearningController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
+
+    @POST
+    @Path("/reset")
+    @Produces("application/json")
+    public Response reset(@CookieParam(value = "user_id") Long userId) {
+        if (userId == null) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        try {
+            var result = learningService.resetLearningProcess(userId);
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
 }

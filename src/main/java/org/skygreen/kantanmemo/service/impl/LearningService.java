@@ -1,8 +1,8 @@
 package org.skygreen.kantanmemo.service.impl;
 
 import org.skygreen.kantanmemo.dao.PersonDao;
-import org.skygreen.kantanmemo.data.LearningProcess;
 import org.skygreen.kantanmemo.dao.WordLearningDataDao;
+import org.skygreen.kantanmemo.data.LearningProcess;
 import org.skygreen.kantanmemo.dto.DailyProgressDTO;
 import org.skygreen.kantanmemo.entity.Person;
 import org.skygreen.kantanmemo.entity.WordLearningData;
@@ -52,6 +52,16 @@ public class LearningService implements ILearningService {
         var person = verifyAndGetPerson(userId);
         var learningProcess = getLearningProcess(person);
         return learningProcess.getDailyProgress();
+    }
+
+    public synchronized boolean resetLearningProcess(Long userId) {
+        verifyAndGetPerson(userId);
+        if (learningProcessMap.containsKey(userId)) {
+            learningProcessMap.remove(userId);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private Person verifyAndGetPerson(Long userId) {
