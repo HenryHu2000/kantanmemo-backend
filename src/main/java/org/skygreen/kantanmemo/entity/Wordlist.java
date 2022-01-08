@@ -7,7 +7,7 @@ import java.util.List;
 @Table(name = "wordlist")
 public class Wordlist {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @ManyToMany

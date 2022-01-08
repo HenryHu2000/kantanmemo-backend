@@ -3,10 +3,7 @@ package org.skygreen.kantanmemo.entity;
 import org.apache.camel.dataformat.bindy.annotation.CsvRecord;
 import org.apache.camel.dataformat.bindy.annotation.DataField;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 /**
  * Example JPA entity.
@@ -31,7 +28,7 @@ import javax.persistence.Table;
 @CsvRecord(separator = ",", skipFirstLine = true)
 public class Word {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @DataField(pos = 1)
     private String name;

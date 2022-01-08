@@ -7,7 +7,7 @@ import java.util.Calendar;
 @Table(name = "word_learning_data")
 public class WordLearningData {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
