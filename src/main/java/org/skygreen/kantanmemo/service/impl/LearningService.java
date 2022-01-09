@@ -115,6 +115,7 @@ public class LearningService implements ILearningService {
                 var total = currentWordlist.getWords().size();
                 var offset = person.getProgress().getOrDefault(currentWordlist, 0);
                 var limit = Math.min(settings.getDailyNewWordNum(), total - offset);
+                person.getProgress().put(currentWordlist, offset + limit);
 
                 var newWords = currentWordlist.getWords().subList(offset, offset + limit);
                 var newWordsToLearn = new ArrayList<WordLearningData>();
@@ -124,13 +125,12 @@ public class LearningService implements ILearningService {
                     wordLearningData.setFamiliarity(0);
                     wordLearningData.setLastSeen(Calendar.getInstance());
 
-                    wordLearningDataDao.save(wordLearningData);
-                    person.getWordLearningDataList().add(wordLearningData);
                     newWordsToLearn.add(wordLearningData);
+                    wordLearningDataDao.save(wordLearningData);
                 }
                 Collections.shuffle(newWordsToLearn);
                 wordsToLearn.addAll(newWordsToLearn);
-                person.getProgress().put(currentWordlist, offset + limit);
+                person.getWordLearningDataList().addAll(newWordsToLearn);
             }
         }
         personDao.save(person);

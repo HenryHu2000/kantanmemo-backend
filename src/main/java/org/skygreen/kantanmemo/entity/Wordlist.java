@@ -11,6 +11,7 @@ public class Wordlist {
     private Long id;
     private String name;
     @ManyToMany
+    @OrderColumn
     private List<Word> words;
 
     public Long getId() {
