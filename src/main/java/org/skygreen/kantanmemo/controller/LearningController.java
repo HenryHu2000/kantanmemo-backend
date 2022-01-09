@@ -70,4 +70,19 @@ public class LearningController {
             return Response.status(Response.Status.FORBIDDEN).build();
         }
     }
+
+    @POST
+    @Path("/more")
+    @Produces("application/json")
+    public Response more(@CookieParam(value = "user_id") Long userId) {
+        if (userId == null) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+        try {
+            var result = learningService.addNewToLearningProcess(userId);
+            return Response.ok(result).build();
+        } catch (ForbiddenException e) {
+            return Response.status(Response.Status.FORBIDDEN).build();
+        }
+    }
 }

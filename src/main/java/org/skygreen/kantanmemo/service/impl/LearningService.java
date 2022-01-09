@@ -64,6 +64,12 @@ public class LearningService implements ILearningService {
         }
     }
 
+    public synchronized boolean addNewToLearningProcess(Long userId) {
+        var person = verifyAndGetPerson(userId);
+        var learningProcess = getLearningProcess(person);
+        return learningProcess.addNewWordsToRemaining(generateUserLearningList(person, true, false));
+    }
+
     private Person verifyAndGetPerson(Long userId) {
         if (userId == null) {
             throw new ForbiddenException();
@@ -84,39 +90,45 @@ public class LearningService implements ILearningService {
     }
 
     private List<WordLearningData> generateUserLearningList(Person person) {
+        return generateUserLearningList(person, true, true);
+    }
+
+    private List<WordLearningData> generateUserLearningList(Person person, boolean includesNewWords, boolean includesRevisingWords) {
         if (person.getUserSettings() == null) {
             throw new ForbiddenException();
         }
         var settings = person.getUserSettings();
 
         var wordsToLearn = new ArrayList<WordLearningData>();
+        if (includesRevisingWords) {
+            // Add revising words
+            var learnedWords = person.getWordLearningDataList();
+            learnedWords.sort(Comparator
+                    .comparing(WordLearningData::getFamiliarity)
+                    .thenComparing(WordLearningData::getLastSeen));
+            wordsToLearn.addAll(learnedWords.subList(0, Math.min(settings.getDailyRevisingWordNum(), learnedWords.size())));
+        }
+        if (includesNewWords) {
+            // Add new words
+            var currentWordlist = settings.getCurrentWordlist();
+            if (currentWordlist != null) {
+                var total = currentWordlist.getWords().size();
+                var offset = person.getProgress().getOrDefault(currentWordlist, 0);
+                var limit = Math.min(settings.getDailyNewWordNum(), total - offset);
 
-        // Add revising words
-        var learnedWords = person.getWordLearningDataList();
-        learnedWords.sort(Comparator
-                .comparing(WordLearningData::getFamiliarity)
-                .thenComparing(WordLearningData::getLastSeen));
-        wordsToLearn.addAll(learnedWords.subList(0, Math.min(settings.getDailyRevisingWordNum(), learnedWords.size())));
+                var newWords = currentWordlist.getWords().subList(offset, offset + limit);
+                for (var word : newWords) {
+                    var wordLearningData = new WordLearningData();
+                    wordLearningData.setWord(word);
+                    wordLearningData.setFamiliarity(0);
+                    wordLearningData.setLastSeen(Calendar.getInstance());
 
-        // Add new words
-        var currentWordlist = settings.getCurrentWordlist();
-        if (currentWordlist != null) {
-            var total = currentWordlist.getWords().size();
-            var offset = person.getProgress().getOrDefault(currentWordlist, 0);
-            var limit = Math.min(settings.getDailyNewWordNum(), total - offset);
-
-            var newWords = currentWordlist.getWords().subList(offset, offset + limit);
-            for (var word : newWords) {
-                var wordLearningData = new WordLearningData();
-                wordLearningData.setWord(word);
-                wordLearningData.setFamiliarity(0);
-                wordLearningData.setLastSeen(Calendar.getInstance());
-
-                wordLearningDataDao.save(wordLearningData);
-                person.getWordLearningDataList().add(wordLearningData);
-                wordsToLearn.add(wordLearningData);
+                    wordLearningDataDao.save(wordLearningData);
+                    person.getWordLearningDataList().add(wordLearningData);
+                    wordsToLearn.add(wordLearningData);
+                }
+                person.getProgress().put(currentWordlist, offset + limit);
             }
-            person.getProgress().put(currentWordlist, offset + limit);
         }
         personDao.save(person);
 

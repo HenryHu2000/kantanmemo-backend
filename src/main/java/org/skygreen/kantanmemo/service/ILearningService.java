@@ -11,4 +11,6 @@ public interface ILearningService {
     DailyProgressDto getDailyProgress(Long userId);
 
     boolean resetLearningProcess(Long userId);
+
+    boolean addNewToLearningProcess(Long userId);
 }

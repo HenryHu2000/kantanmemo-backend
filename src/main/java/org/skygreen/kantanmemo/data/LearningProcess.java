@@ -24,15 +24,9 @@ public class LearningProcess {
         remainingWords = new ArrayDeque<>();
         learningQueue = new ArrayDeque<>();
         finishedWords = new ArrayDeque<>();
+        isTerminated = true;
 
-        if (!learningList.isEmpty()) {
-            remainingWords.addAll(learningList);
-            addNewWordToQueue(); // Add the first word to learningQueue
-            isTerminated = false;
-        } else {
-            // Handle the empty learningList case
-            isTerminated = true;
-        }
+        addNewWordsToRemaining(learningList);
     }
 
     public void proceed(boolean isKnown) {
@@ -139,5 +133,14 @@ public class LearningProcess {
 
     public DailyProgressDto getDailyProgress() {
         return new DailyProgressDto(remainingWords.size(), learningQueue.size(), finishedWords.size());
+    }
+
+    public boolean addNewWordsToRemaining(List<WordLearningData> learningList) {
+        remainingWords.addAll(learningList);
+        if (isTerminated && !learningList.isEmpty()) {
+            addNewWordToQueue(); // Add the first word to learningQueue
+            isTerminated = false;
+        }
+        return isTerminated;
     }
 }
